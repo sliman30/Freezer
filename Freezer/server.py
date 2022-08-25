@@ -37,6 +37,7 @@ class Server():
         con.sendall(msg.encode())
         con.close()
         self.s.close()
+        
 serv = Server("10.125.24.56",12002)
 serv.wait()
 serv.s.close()

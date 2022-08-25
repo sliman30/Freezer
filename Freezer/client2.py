@@ -2,8 +2,8 @@ import socket
 import sys
 
 class Client():
-    HOST = '10.125.24.84'    # The remote host
-    PORT =  12000        # The same port as used by the server
+    HOST = '10.125.24.56'    # The remote host
+    PORT =  12006        # The same port as used by the server
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     def __init__(self) -> None:
         pass

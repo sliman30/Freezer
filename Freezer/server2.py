@@ -1,6 +1,7 @@
 import socket
 import re
 import os
+import ftplib
 
 class Server():
     def __init__ (self, host , port):
@@ -16,6 +17,15 @@ class Server():
         print('Connected by', addr)
         self.conn(con,addr)
 
+    def FTP_conn(self):
+        ###################################################
+        USER   = 'guest'#input("Enter your username : ")
+        PASSWD = 'guest'#maskpass.askpass("Enter your password : ")
+        HOST   = "10.125.24.63"
+        ###################################################
+        # Open ftp connection
+        self.ftps = ftplib.FTP_TLS(HOST,USER,PASSWD)
+
     # fonction qui gere 1 client connecté
     def conn(self,con,addr):
         client = True
@@ -27,8 +37,12 @@ class Server():
         result =re.search("^([a-z0-9\-@]+) ?([0-9\.A-z\ ]+)?$",data)
         if result.group(1) == "get":
             SONG = result.group(2)
-            os.system("spotdl " + SONG + " -p '~/Music/{title}-{artist}.{ext}'")     
- 
+            os.system("spotdl " + SONG + " -p '/home/guest/Music/{title}-{artist}.{ext}'")     
+            self.FTP_conn()
+            for SONG in os.listdir('/home/imane/Musique'):
+                with open(os.path.join('/home/imane/Musique',SONG), 'rb') as file:
+                    self.ftps.storbinary(f'STOR {SONG}', file)
+        
         msg=""
         for i in get:
             msg+=str(i)+ret
@@ -36,5 +50,5 @@ class Server():
         # on envoie une reponse au client
         con.sendall(msg.encode())
         
-serv = Server("10.125.24.84",12000)
+serv = Server("10.125.24.56",12002)
 serv.wait()

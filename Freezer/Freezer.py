@@ -11,7 +11,7 @@ import client2
 ###################################################
 USER   = 'guest'#input("Enter your username : ")
 PASSWD = 'guest'#maskpass.askpass("Enter your password : ")
-HOST   = "10.125.24.84"
+HOST   = "10.125.24.56"
 ###################################################
 # Open ftp connection
 
@@ -54,12 +54,18 @@ else:
     
     ClientLocal = client2.Client()
     ClientLocal.connect("get "+ SONG)
-    localfile = open(f, 'wb')        
-    ftps.retrbinary('RETR ' + f, localfile.write, 1024)
-    Song_name = str(localfile).split("'")[1]
-    Song_path = os.path.abspath(str(Song_name))
-    shutil.move(Song_path,dirFTP)
     ClientLocal.close()
+    for g in Songs:
+        print(g)
+        if SONG in g:
+            print('if')
+            localfile0 = open(g, 'wb')        
+            ftps.retrbinary('RETR ' + g, localfile.write, 1024)
+            Song_name0 = str(localfile0).split("'")[1]
+            Song_path0 = os.path.abspath(str(Song_name0))
+            shutil.move(Song_path,dirFTP)
+
+
     #os.system("spotdl " + SONG + " -p '~/Musique/{title}-{artist}.{ext}'")
     # for SONG in os.listdir(dirFTP):
     #     with open(os.path.join(dirFTP,SONG), 'rb') as file:
